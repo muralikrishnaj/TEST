@@ -1,29 +1,22 @@
 pipeline {
-
-    agent any
+    agent any 
 
     stages {
-        stage('Build') {
-            steps {
-                echo 'Building...'
-                sh 'npm install'
+        stage('Build') { 
+            steps { 
+                sh 'make' 
             }
         }
-        stage('Test') {
+        stage('Test'){
             steps {
-                echo 'Testing...'
-                sh 'npm test'
+                sh 'make check'
+                junit 'reports/**/*.xml' 
             }
-        stage('Build Fail/Pass') {
+        }
+        stage('Deploy') {
             steps {
-                echo 'Build Fail/Pass...'
-                sh 'npm Build Fail Condition'
+                sh 'make publish'
             }
-            stage('Exporting results') {
-                 steps {
-                    echo 'Exporting Results to HP SSC...'
-                    sh 'npm results export condition'
-                }
         }
     }
 }
